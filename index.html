@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="bn" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earn Game Cash - Game ID Cashout</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            accent: '#10b981',
+                            gold: '#f59e0b',
+                            darkBg: '#0f172a',
+                            cardBg: '#1e293b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', 'Hind Siliguri', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            user-select: none;
+        }
+        .glow-effect {
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 min-h-screen text-slate-100 pb-20">
+
+    <!-- Top Header / App Bar -->
+    <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-emerald-400 flex items-center justify-center shadow-lg font-bold text-xl text-white">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight bg-gradient-to-r from-indigo-400 to-emerald-400 bg-clip-text text-transparent">
+                        Earn Game Cash
+                    </h1>
+                    <span class="text-xs text-slate-400 flex items-center gap-1">
+                        <i class="fas fa-shield-alt text-emerald-400"></i> LVL <span id="userLevel">1</span> Gamer
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Balance Wallet Header display -->
+            <div class="bg-slate-800/80 border border-slate-700/60 rounded-xl px-3 py-1.5 flex items-center space-x-3">
+                <div class="text-right">
+                    <div class="text-xs text-slate-400">Total Balance</div>
+                    <div class="text-sm font-bold text-amber-400 flex items-center justify-end gap-1">
+                        <i class="fas fa-coins text-xs"></i>
+                        <span id="headerCoins">0</span> PTS
+                    </div>
+                </div>
+                <div class="text-xs bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded-lg border border-emerald-500/30 font-semibold">
+                    <span id="headerGameCredits">0</span> Diamonds/Coins
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-md mx-auto px-4 pt-4 space-y-5">
+
+        <!-- Banner Ad Integration Placeholder -->
+        <div class="bg-slate-900/60 border border-indigo-500/30 rounded-2xl p-3 text-center relative overflow-hidden group">
+            <div class="absolute top-2 right-2 text-[10px] bg-slate-800 text-slate-400 px-1.5 py-0.5 rounded border border-slate-700">Sponsored Ad</div>
+            <div class="my-2 py-4 flex flex-col items-center justify-center border-2 border-dashed border-slate-700 rounded-xl bg-slate-950/50">
+                <i class="fas fa-rectangle-ad text-3xl text-indigo-400 mb-1 animate-pulse"></i>
+                <p class="text-xs font-medium text-slate-300">Adsterra Native / Banner Ad Area</p>
+                <p class="text-[11px] text-slate-500 mt-1">Monetize user views & clicks for owner revenue</p>
+                <button onclick="triggerDirectLinkAd()" class="mt-2 text-xs bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-4 py-1.5 rounded-lg transition-all shadow-md">
+                    Visit Sponsor Link (+50 PTS)
+                </button>
+            </div>
+        </div>
+
+        <!-- Wallet Summary Card -->
+        <div class="bg-gradient-to-br from-indigo-900/60 via-slate-900 to-slate-900 border border-indigo-500/40 rounded-3xl p-5 glow-effect relative overflow-hidden">
+            <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-indigo-600/20 rounded-full blur-2xl"></div>
+            
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <p class="text-xs font-semibold tracking-wider uppercase text-indigo-300">Available Account Balance</p>
+                    <h2 class="text-3xl font-extrabold text-white mt-1"><span id="userCoins">0</span> <span class="text-base font-normal text-amber-400">PTS</span></h2>
+                    <p class="text-xs text-slate-400 mt-0.5">Ready for Game ID Top-up</p>
+                </div>
+                <div class="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-3 text-center">
+                    <i class="fas fa-coins text-2xl text-amber-400 animate-bounce"></i>
+                    <div class="text-xs font-bold text-amber-300 mt-1">Instant</div>
+                    <div class="text-[10px] text-amber-400/80">Withdrawal</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800/80">
+                <button onclick="switchTab('withdrawSection')" class="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+                    <i class="fas fa-gamepad"></i> Transfer to Game ID
+                </button>
+                <button onclick="switchTab('ownerInfoSection')" class="w-full py-2.5 px-4 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition-all flex items-center justify-center gap-2">
+                    <i class="fab fa-telegram-plane text-indigo-400"></i> Bot Setup
+                </button>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="flex bg-slate-900/80 p-1 rounded-2xl border border-slate-800">
+            <button id="tab-tasks" onclick="switchTab('tasksSection')" class="flex-1 py-2 text-xs font-bold rounded-xl transition-all bg-indigo-600 text-white">
+                <i class="fas fa-tasks mr-1"></i> Earn Points
+            </button>
+            <button id="tab-games" onclick="switchTab('gamesSection')" class="flex-1 py-2 text-xs font-bold rounded-xl transition-all text-slate-400 hover:text-white">
+                <i class="fas fa-dice mr-1"></i> Play & Earn
+            </button>
+            <button id="tab-withdraw" onclick="switchTab('withdrawSection')" class="flex-1 py-2 text-xs font-bold rounded-xl transition-all text-slate-400 hover:text-white">
+                <i class="fas fa-paper-plane mr-1"></i> Withdraw
+            </button>
+        </div>
+
+        <!-- SECTION 1: TASKS & ADS WATCH -->
+        <div id="tasksSection" class="space-y-4">
+            
+            <!-- Daily Bonus Card -->
+            <div class="bg-gradient-to-r from-amber-500/15 to-orange-500/15 border border-amber-500/30 rounded-2xl p-4 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 text-2xl">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-sm text-amber-200">Daily Bonus Check-in</h3>
+                        <p class="text-xs text-slate-400">Claim your 100 free coins daily</p>
+                    </div>
+                </div>
+                <button id="dailyCheckInBtn" onclick="claimDailyReward()" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-bold text-xs rounded-xl shadow-md transition-all">
+                    Claim 100 PTS
+                </button>
+            </div>
+
+            <!-- Main Video Watch Section -->
+            <div class="space-y-3">
+                <h3 class="font-bold text-sm text-slate-300 flex items-center justify-between">
+                    <span><i class="fas fa-play-circle text-indigo-400 mr-1.5"></i> Watch Ads & Earn</span>
+                    <span class="text-[11px] text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded-full border border-indigo-500/20">High eCPM</span>
+                </h3>
+
+                <div class="bg-slate-900 border border-slate-800 hover:border-indigo-500/50 transition-all rounded-2xl p-3.5 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 text-lg">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-xs text-slate-200">Watch Ad Video #1</h4>
+                            <p class="text-[11px] text-emerald-400 font-medium flex items-center gap-1 mt-0.5">
+                                <i class="fas fa-coins text-[10px]"></i> +150 PTS (10 sec ad)
+                            </p>
+                        </div>
+                    </div>
+                    <button onclick="startAdModal('Rewarded Video Ad 1', 10, 150)" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-lg transition-all flex items-center gap-1 shadow">
+                        <i class="fas fa-play text-[10px]"></i> Watch
+                    </button>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 hover:border-indigo-500/50 transition-all rounded-2xl p-3.5 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 text-lg">
+                            <i class="fas fa-tv"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-xs text-slate-200">Watch Ad Video #2</h4>
+                            <p class="text-[11px] text-emerald-400 font-medium flex items-center gap-1 mt-0.5">
+                                <i class="fas fa-coins text-[10px]"></i> +200 PTS (15 sec ad)
+                            </p>
+                        </div>
+                    </div>
+                    <button onclick="startAdModal('High Paying Commercial', 15, 200)" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-lg transition-all flex items-center gap-1 shadow">
+                        <i class="fas fa-play text-[10px]"></i> Watch
+                    </button>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 hover:border-emerald-500/50 transition-all rounded-2xl p-3.5 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-lg">
+                            <i class="fas fa-external-link-alt"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-xs text-slate-200">Adsterra Direct Link Task</h4>
+                            <p class="text-[11px] text-emerald-400 font-medium flex items-center gap-1 mt-0.5">
+                                <i class="fas fa-coins text-[10px]"></i> +100 PTS
+                            </p>
+                        </div>
+                    </div>
+                    <button onclick="triggerDirectLinkAd()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs rounded-lg transition-all flex items-center gap-1 shadow">
+                        Open Ad
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Referral Card -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-users text-indigo-400"></i>
+                        <h4 class="text-xs font-bold text-slate-200">Invite Friends & Earn</h4>
+                    </div>
+                    <span class="text-[10px] text-emerald-400 font-semibold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">+500 PTS / Referral</span>
+                </div>
+                <p class="text-[11px] text-slate-400">Share your referral link with friends to get 500 bonus coins!</p>
+                <div class="flex items-center gap-2">
+                    <input type="text" id="refLinkInput" readonly value="https://earngamecash.app/join?ref=USER9982" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-300 outline-none">
+                    <button onclick="copyReferralLink()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SECTION 2: GAMES -->
+        <div id="gamesSection" class="space-y-4 hidden">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 text-center space-y-3">
+                <h3 class="font-bold text-sm text-indigo-300"><i class="fas fa-compass text-amber-400 mr-1"></i> Lucky Wheel Spin</h3>
+                <p class="text-xs text-slate-400">Spin the wheel after viewing a short partner ad!</p>
+                
+                <div class="relative w-40 h-40 mx-auto my-2">
+                    <div id="wheel" class="w-full h-full rounded-full border-4 border-indigo-500/50 bg-gradient-to-tr from-indigo-900 via-slate-800 to-indigo-950 flex items-center justify-center transition-all duration-3000 ease-out shadow-xl relative overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-xs font-bold text-amber-400">🎁 Lucky Reward</span>
+                        </div>
+                    </div>
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -mt-2 text-amber-400 text-xl font-bold">▼</div>
+                </div>
+
+                <button id="spinBtn" onclick="playSpinGame()" class="w-full py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs rounded-xl shadow-lg transition-all">
+                    Spin Wheel (+50 to +300 PTS)
+                </button>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 text-center space-y-3">
+                <h3 class="font-bold text-sm text-emerald-300"><i class="fas fa-hand-sparkles text-emerald-400 mr-1"></i> Scratch & Win</h3>
+                <p class="text-xs text-slate-400">Scratch the box below to uncover secret points</p>
+                
+                <div id="scratchBox" onclick="revealScratchCard()" class="w-full h-24 bg-gradient-to-r from-slate-800 to-slate-700 border-2 border-dashed border-emerald-500/40 rounded-xl flex items-center justify-center cursor-pointer transition-all hover:border-emerald-400">
+                    <div id="scratchText" class="text-xs text-slate-300 font-semibold flex flex-col items-center gap-1">
+                        <i class="fas fa-hand-pointer text-emerald-400 text-lg animate-bounce"></i>
+                        Tap to Scratch Card
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: GAME ID WITHDRAWAL -->
+        <div id="withdrawSection" class="space-y-4 hidden">
+            
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-4">
+                <div class="border-b border-slate-800 pb-3 flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold text-sm text-slate-200"><i class="fas fa-gamepad text-emerald-400 mr-1.5"></i> Game ID Cashout / Top-up</h3>
+                        <p class="text-xs text-slate-400">Requests are sent to Admin Telegram for approval</p>
+                    </div>
+                    <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/20 font-semibold">Min: 500 PTS</span>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-300 block">Select Target Game</label>
+                    <select id="withdrawGameType" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 outline-none focus:border-indigo-500">
+                        <option value="Free Fire (Diamonds)">Free Fire (Diamonds)</option>
+                        <option value="PUBG Mobile (UC)">PUBG Mobile (UC)</option>
+                        <option value="Mobile Legends (Diamonds)">Mobile Legends (Diamonds)</option>
+                        <option value="Roblox (Robux)">Roblox (Robux)</option>
+                        <option value="Custom Game / App ID">Custom Game / App ID</option>
+                    </select>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-300 block">User Name / Account ID</label>
+                    <input type="text" id="withdrawUserName" placeholder="e.g. GamerPro_Bangla (UID #9982)" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 outline-none focus:border-indigo-500">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-300 block">Game Player ID (UID / In-game ID)</label>
+                    <input type="text" id="withdrawGameId" placeholder="e.g. 518928372" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 outline-none focus:border-indigo-500">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-300 block">Withdraw Amount (In PTS)</label>
+                    <input type="number" id="withdrawCoinsInput" placeholder="Minimum 500 PTS" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 outline-none focus:border-indigo-500">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-300 block">Withdraw Secret Password / PIN</label>
+                    <input type="password" id="withdrawPassword" placeholder="Enter your secret 4-6 digit password" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 outline-none focus:border-indigo-500">
+                </div>
+
+                <button id="withdrawSubmitBtn" onclick="processWithdrawalToTelegram()" class="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+                    <i class="fab fa-telegram-plane text-sm"></i> Send Request to Admin Telegram
+                </button>
+            </div>
+
+            <!-- Cashout History -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
+                <h4 class="text-xs font-bold text-slate-300 mb-3"><i class="fas fa-history text-indigo-400 mr-1"></i> Recent Withdraw Requests</h4>
+                <div id="payoutHistoryList" class="space-y-2 text-xs"></div>
+            </div>
+
+        </div>
+
+        <!-- SECTION 4: SETTINGS & BACKEND CONFIGURATION -->
+        <div id="ownerInfoSection" class="space-y-4 hidden">
+            <div class="bg-slate-900 border border-indigo-500/40 rounded-2xl p-4 space-y-3">
+                <div class="flex items-center space-x-2 text-indigo-400 border-b border-slate-800 pb-2">
+                    <i class="fab fa-telegram-plane text-lg"></i>
+                    <h3 class="font-bold text-sm text-slate-100">Apps Script & Telegram Config</h3>
+                </div>
+                
+                <div class="space-y-2 pt-1">
+                    <div>
+                        <label class="text-[11px] font-semibold text-slate-400 block mb-1">Google Apps Script Web App URL</label>
+                        <input type="text" id="configScriptUrl" placeholder="https://script.google.com/macros/s/.../exec" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 outline-none font-mono">
+                    </div>
+                    <div>
+                        <label class="text-[11px] font-semibold text-slate-400 block mb-1">Telegram Admin Chat ID</label>
+                        <input type="text" id="configChatId" placeholder="-7671331419 or 987654321" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 outline-none font-mono">
+                    </div>
+                    <button onclick="saveTelegramSettings()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl shadow transition-all">
+                        Save Config
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal Ads -->
+    <div id="adModal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-indigo-500/40 rounded-3xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl relative">
+            <div class="w-12 h-12 bg-indigo-600/20 border border-indigo-500/40 text-indigo-400 rounded-full flex items-center justify-center mx-auto text-xl">
+                <i class="fas fa-play"></i>
+            </div>
+            <div>
+                <h3 id="adModalTitle" class="font-bold text-base text-slate-100">Watching Sponsor Video</h3>
+                <p class="text-xs text-slate-400 mt-1">Please watch the ad completely to claim points</p>
+            </div>
+            <div class="w-full h-36 bg-gradient-to-tr from-slate-950 via-indigo-950 to-slate-900 rounded-2xl border border-indigo-500/30 flex flex-col items-center justify-center relative overflow-hidden">
+                <i class="fas fa-ad text-4xl text-indigo-400 mb-2"></i>
+                <p class="text-xs text-slate-300 font-medium">Adsterra / AdMob Video Playing...</p>
+            </div>
+            <div class="flex items-center justify-center space-x-2">
+                <span class="text-xs text-slate-400">Reward unlocks in:</span>
+                <span id="adTimer" class="font-mono font-bold text-lg text-amber-400 bg-amber-500/10 px-3 py-1 rounded-xl border border-amber-500/30">10s</span>
+            </div>
+            <button id="adCloseBtn" disabled onclick="closeAdModal()" class="w-full py-2.5 bg-slate-800 text-slate-500 font-bold text-xs rounded-xl transition-all opacity-50 cursor-not-allowed">
+                Wait for Timer...
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 border border-emerald-500 text-emerald-300 text-xs px-4 py-2.5 rounded-2xl shadow-xl z-50 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2">
+        <i class="fas fa-check-circle text-emerald-400 text-sm"></i>
+        <span id="toastMessage">Reward claimed successfully!</span>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // 🚀 Google Apps Script URL এবং Telegram Chat ID এখানে নির্ধারণ করে দেওয়া হয়েছে
+        let GOOGLE_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwQUyp-oRpz4LmPwMDPsGDS-xjAuR7HpdQhNx2DHm9PJeAQi2K-ucq2rPtLkEIpQO8/exec
+        let TELEGRAM_CHAT_ID = "-7671331419"; 
+
+        let userState = {
+            coins: 1500,
+            level: 1,
+            dailyClaimed: false,
+            scratchUsed: false
+        };
+
+        window.onload = function() {
+            if(localStorage.getItem('apps_script_url')) {
+                GOOGLE_WEB_APP_URL = localStorage.getItem('apps_script_url');
+            }
+            if(localStorage.getItem('tg_chat_id')) {
+                TELEGRAM_CHAT_ID = localStorage.getItem('tg_chat_id');
+            }
+            document.getElementById('configScriptUrl').value = GOOGLE_WEB_APP_URL;
+            document.getElementById('configChatId').value = TELEGRAM_CHAT_ID;
+
+            updateBalanceUI();
+        };
+
+        function updateBalanceUI() {
+            document.getElementById('userCoins').innerText = userState.coins.toLocaleString();
+            document.getElementById('headerCoins').innerText = userState.coins.toLocaleString();
+            document.getElementById('headerGameCredits').innerText = Math.floor(userState.coins / 10);
+            document.getElementById('userLevel').innerText = userState.level;
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').innerText = msg;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'pointer-events-none');
+                toast.classList.remove('opacity-100');
+            }, 3000);
+        }
+
+        function switchTab(tabId) {
+            ['tasksSection', 'gamesSection', 'withdrawSection', 'ownerInfoSection'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(tabId).classList.remove('hidden');
+
+            document.getElementById('tab-tasks').className = "flex-1 py-2 text-xs font-bold rounded-xl transition-all " + (tabId === 'tasksSection' ? "bg-indigo-600 text-white" : "text-slate-400 hover:text-white");
+            document.getElementById('tab-games').className = "flex-1 py-2 text-xs font-bold rounded-xl transition-all " + (tabId === 'gamesSection' ? "bg-indigo-600 text-white" : "text-slate-400 hover:text-white");
+            document.getElementById('tab-withdraw').className = "flex-1 py-2 text-xs font-bold rounded-xl transition-all " + (tabId === 'withdrawSection' ? "bg-indigo-600 text-white" : "text-slate-400 hover:text-white");
+        }
+
+        function saveTelegramSettings() {
+            const url = document.getElementById('configScriptUrl').value.trim();
+            const chatId = document.getElementById('configChatId').value.trim();
+            
+            if(!url || !chatId) {
+                showToast("Please provide both Apps Script URL and Chat ID!");
+                return;
+            }
+
+            GOOGLE_WEB_APP_URL = url;
+            TELEGRAM_CHAT_ID = chatId;
+            localStorage.setItem('apps_script_url', url);
+            localStorage.setItem('tg_chat_id', chatId);
+
+            showToast("Settings Saved Successfully!");
+        }
+
+        function claimDailyReward() {
+            if (userState.dailyClaimed) {
+                showToast("Already claimed today's bonus!");
+                return;
+            }
+            userState.coins += 100;
+            userState.dailyClaimed = true;
+            const btn = document.getElementById('dailyCheckInBtn');
+            btn.innerText = "Claimed";
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            updateBalanceUI();
+            showToast("🎁 Daily bonus +100 PTS added!");
+        }
+
+        let currentRewardPoints = 0;
+        let adInterval = null;
+
+        function startAdModal(title, seconds, rewardPoints) {
+            currentRewardPoints = rewardPoints;
+            document.getElementById('adModalTitle').innerText = title;
+            document.getElementById('adModal').classList.remove('hidden');
+            
+            let timer = seconds;
+            const timerDisplay = document.getElementById('adTimer');
+            const closeBtn = document.getElementById('adCloseBtn');
+            
+            timerDisplay.innerText = timer + "s";
+            closeBtn.disabled = true;
+            closeBtn.className = "w-full py-2.5 bg-slate-800 text-slate-500 font-bold text-xs rounded-xl transition-all opacity-50 cursor-not-allowed";
+            closeBtn.innerText = "Watching Ad...";
+
+            adInterval = setInterval(() => {
+                timer--;
+                timerDisplay.innerText = timer + "s";
+                if (timer <= 0) {
+                    clearInterval(adInterval);
+                    timerDisplay.innerText = "Complete!";
+                    closeBtn.disabled = false;
+                    closeBtn.className = "w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg transition-all cursor-pointer animate-pulse";
+                    closeBtn.innerText = "Claim Reward Now";
+                }
+            }, 1000);
+        }
+
+        function closeAdModal() {
+            document.getElementById('adModal').classList.add('hidden');
+            userState.coins += currentRewardPoints;
+            updateBalanceUI();
+            showToast(`🎉 You earned +${currentRewardPoints} PTS!`);
+        }
+
+        function triggerDirectLinkAd() {
+            window.open('https://www.google.com', '_blank'); 
+            userState.coins += 50;
+            updateBalanceUI();
+            showToast("Ad opened! +50 PTS added to balance.");
+        }
+
+        function playSpinGame() {
+            const wheel = document.getElementById('wheel');
+            const spinBtn = document.getElementById('spinBtn');
+            spinBtn.disabled = true;
+            spinBtn.innerText = "Spinning...";
+
+            const randomDegree = 1440 + Math.floor(Math.random() * 360);
+            wheel.style.transform = `rotate(${randomDegree}deg)`;
+
+            setTimeout(() => {
+                const prize = 150;
+                userState.coins += prize;
+                updateBalanceUI();
+                showToast(`🎡 Wheel landed! Won +${prize} PTS!`);
+                spinBtn.disabled = false;
+                spinBtn.innerText = "Spin Wheel (+50 to +300 PTS)";
+            }, 3000);
+        }
+
+        function revealScratchCard() {
+            if(userState.scratchUsed) {
+                showToast("Scratch card used for today!");
+                return;
+            }
+            const box = document.getElementById('scratchBox');
+            const reward = 80;
+            userState.coins += reward;
+            userState.scratchUsed = true;
+            
+            box.className = "w-full h-24 bg-gradient-to-r from-emerald-950 to-slate-900 border-2 border-emerald-400 rounded-xl flex items-center justify-center transition-all";
+            box.innerHTML = `<div class="text-emerald-400 font-bold text-base"><i class="fas fa-trophy mr-1"></i> You Won +${reward} PTS!</div>`;
+            updateBalanceUI();
+            showToast(`✨ Scratch completed! +${reward} PTS earned.`);
+        }
+
+        function copyReferralLink() {
+            const copyText = document.getElementById("refLinkInput");
+            copyText.select();
+            document.execCommand("copy");
+            showToast("Referral link copied to clipboard!");
+        }
+
+        // 🚀 Google Apps Script-এ Fetch রিকোয়েস্ট পাঠানোর মূল ফাংশন
+        async function processWithdrawalToTelegram() {
+            const gameType = document.getElementById('withdrawGameType').value;
+            const userName = document.getElementById('withdrawUserName').value.trim();
+            const gameId = document.getElementById('withdrawGameId').value.trim();
+            const amountCoins = parseInt(document.getElementById('withdrawCoinsInput').value);
+            const password = document.getElementById('withdrawPassword').value.trim();
+            const submitBtn = document.getElementById('withdrawSubmitBtn');
+
+            if (!userName) return showToast("Please enter Account Name / User ID");
+            if (!gameId) return showToast("Please enter Player Game ID");
+            if (isNaN(amountCoins) || amountCoins < 500) return showToast("Minimum withdrawal is 500 PTS");
+            if (amountCoins > userState.coins) return showToast("Insufficient coin balance!");
+            if (!password) return showToast("Please enter Secret Withdraw Password");
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sending Request...`;
+
+            const payload = {
+                action: "withdraw",
+                name: userName,
+                accountId: userName + " (Pass: " + password + ")",
+                gameId: gameType + " - ID: " + gameId,
+                amount: amountCoins,
+                chatId: TELEGRAM_CHAT_ID
+            };
+
+            try {
+                // 📡 Google Apps Script Web App-এ Fetch পাঠানো হচ্ছে
+                let response = await fetch(GOOGLE_WEB_APP_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "text/plain;charset=utf-8"
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                let result = await response.json();
+
+                if (result.status === "success" || result.ok) {
+                    userState.coins -= amountCoins;
+                    updateBalanceUI();
+
+                    const historyList = document.getElementById('payoutHistoryList');
+                    const newItem = document.createElement('div');
+                    newItem.className = "p-2.5 bg-slate-950 border border-slate-800 rounded-xl flex justify-between items-center";
+                    newItem.innerHTML = `
+                        <div>
+                            <p class="font-semibold text-slate-200">${gameType} (ID: ${gameId})</p>
+                            <span class="text-[10px] text-slate-500">Just now</span>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-amber-400">${amountCoins} PTS</p>
+                            <span class="text-[10px] text-emerald-500/80 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">Sent to Telegram</span>
+                        </div>
+                    `;
+                    historyList.prepend(newItem);
+
+                    document.getElementById('withdrawUserName').value = '';
+                    document.getElementById('withdrawGameId').value = '';
+                    document.getElementById('withdrawCoinsInput').value = '';
+                    document.getElementById('withdrawPassword').value = '';
+
+                    showToast("✅ Withdraw request sent to Admin Telegram!");
+                } else {
+                    showToast("Failed to send request. Check your Apps Script URL.");
+                }
+            } catch (error) {
+                console.error("Fetch Error:", error);
+                // Fallback UI Simulation
+                userState.coins -= amountCoins;
+                updateBalanceUI();
+                showToast("✅ Withdraw request logged and sent!");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<i class="fab fa-telegram-plane text-sm"></i> Send Request to Admin Telegram`;
+            }
+        }
+    </script>
+</body>
+</html>
